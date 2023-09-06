@@ -79,4 +79,23 @@ export class ChatService {
       throw new BadRequestException(error.message);
     }
   }
+
+  async getChats(id: string) {
+    try {
+      const data = await this.prisma.chat.findMany({
+        where: {
+          users: {
+            some: {
+              id,
+            },
+          },
+        },
+        include: {
+          users: true,
+        },
+      });
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
 }
